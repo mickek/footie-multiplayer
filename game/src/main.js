@@ -35,7 +35,7 @@ var Footie = cocos.nodes.Layer.extend({
 
         this.set('currentPlayer', currentPlayer)
         this.createPlayer({'position':[160,280], 'velocity':[0,0], 'id': currentPlayer})
-        
+
         this.set('size', s);
 
         // // Add Ball
@@ -192,6 +192,10 @@ var Footie = cocos.nodes.Layer.extend({
         scene.addChild({child: Footie.create()});
 
         director.replaceScene(scene);
+    },
+
+    syncGameState: function () {
+        socket.send(gameState());
     }
 });
 
