@@ -10,5 +10,10 @@ class ServerListHandler(webapp.RequestHandler):
         self.response.out.write(template.render(path, v))
     
     def post(self):
-        pass
+        link=self.request.POST.get('url', 'url')
+        v = {'l': link }
+
+        path = os.path.join(os.path.dirname(__file__), 'templates/main.html')
+        self.response.out.write(template.render(path, v))
+
 
