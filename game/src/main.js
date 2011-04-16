@@ -65,9 +65,11 @@ var Footie = cocos.nodes.Layer.extend({
                 this.createPlayer(player)
             }else{
 
-                var obj = this.players[key]
+                var obj = state['players'][key]
+                var player = this.players[key]
 
-                var player = this.players[obj['id']]
+                console.log(obj, player)
+
                 var playerPos = player.get('position');
 
                 playerPos.x = obj.position[0];
@@ -82,11 +84,14 @@ var Footie = cocos.nodes.Layer.extend({
         }
 
         var obj = state.ball
-        var ballPos = this.ball.get('position');
-        ballPos.x = obj.position[0];
-        ballPos.y = obj.position[1];
+        if( obj !== undefined ){
+            var ballPos = this.ball.get('position');
 
-        ball.set('velocity', new geom.Point(60, 120));
+            ballPos.x = obj.position[0];
+            ballPos.y = obj.position[1];
+
+            this.ball.set('velocity', new geom.Point(60, 120));
+        }
     },
 
     setPlayerVelocity: function(player_id, vector ){
@@ -182,25 +187,29 @@ footie = Footie.create();
 scene.addChild({child: footie});
 
 var gameState = function () {
-    var players = [];
+    var players = {};
     for (var p in footie.players) {
-        players.push[footie.players[p].getPosition()];
+        players[p] = footie.players[p].getPosition()
     }
+
     state = {
-        players: players,
-        ball: this.ball.getPosition()
+        player: footie.players[footie.currentPlayer].getPosition(),
+        ball: footie.ball.getPosition()
     }
     return state;
 }
 
 var sockSync = setInterval(function () {
     // sync state
-    socket.send(gameState());
+    var gs = gameState()
+    // console.log('sending', gs)
+    socket.send(gs);
 }, 1000);
 
 socket.onGameUpdate(function (gs) {
     // todo
-    footie.updateState(gameState());
+    console.log('recieved', gs)
+    footie.updateState(gs)
 });
 
 
