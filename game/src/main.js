@@ -91,18 +91,20 @@ var Footie = cocos.nodes.Layer.extend({
 
         var currentPlayer = this.get('currentPlayer')
 
+        var speed = 100
+
         switch(evt.keyIdentifier){
             case 'Right':
-                this.setPlayerVelocity(currentPlayer, [5, 0])
+                this.setPlayerVelocity(currentPlayer, [speed, 0])
                 break;
             case 'Left':
-                this.setPlayerVelocity(currentPlayer, [-5, 0])
+                this.setPlayerVelocity(currentPlayer, [-1*speed, 0])
                 break;
             case 'Up':
-                this.setPlayerVelocity(currentPlayer, [0, -5])
+                this.setPlayerVelocity(currentPlayer, [0, -1*speed])
                 break;
             case 'Down':
-                this.setPlayerVelocity(currentPlayer, [0, 5])
+                this.setPlayerVelocity(currentPlayer, [0, 1*speed])
                 break;
 
             default: break;
