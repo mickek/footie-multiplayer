@@ -39,9 +39,8 @@ server.addListener("connection", function(client){
 
     client.addListener("message", function(msg){
         // send to all
+        console.log("new mesage", msg);
         server.broadcast(msg);
-
-        client.send("you crazy coder!");
     });
     client.addListener("close", function () {
         delete clients[client.id];

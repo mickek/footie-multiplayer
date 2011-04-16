@@ -3,7 +3,12 @@ var cocos = require('cocos2d'),
 // Import the geometry module
     geom = require('geometry'),
     Player = require('Player'),
+    Socket = require('Socket'),
+    evt = require('event'),
     Ball = require('Ball');
+
+var socket = Socket();
+var gameState = {};
 
 // Create a new layer
 var Footie = cocos.nodes.Layer.extend({
@@ -24,33 +29,29 @@ var Footie = cocos.nodes.Layer.extend({
         var s = cocos.Director.get('sharedDirector').get('winSize');
 
         this.set('currentPlayer', 'player0')
-        this.createPlayer( {'x':160,'y':280, 'id':'player0'} )
+        this.createPlayers([
+            {'x':160,'y':280, 'id':'player0'},
+            {'x':140,'y':180, 'id':'player1'},
+        ])
 
-        // // Add Ball
-        // var ball = Ball.create();
-        // ball.set('position', new geom.Point(140, 210));
-        // this.addChild({child: ball});
-        // this.set('ball', ball);
-
-
-        var that = this;
-        setInterval(function() {
-            // that.updateState({x:30, y:Math.floor(Math.random() * 50)});
-        }, 1000);
+        // add syncing event for player
+        var currentPlayer = this.get('current_player');
+        evt.addListener(this.player0, 'position_changed', function (pos) {
+            socket.send(JSON.stringify(gameState));
+        });
 
     },
 
     createPlayer: function(player){
-        
+
         var player = Player.create()
         player.set( 'position', new geom.Point(player['x'], player['y']) )
         player.set('velocity', new geom.Point(0,0) )
         this.addChild({child: player})
-                
         this.players[player['id']] = player
     },
 
-    /** 
+    /**
      * expects smth like: { 'players': [{'id':'someid', position:[0,0], velocity: [0,0]}, {...}], 'ball': {position:[0,0], velocity:[0,0]} }
      */
     updateState: function(state) {
@@ -61,13 +62,13 @@ var Footie = cocos.nodes.Layer.extend({
         for( var key in state['players']){
 
             var obj = players[key]
-            
+
             var player = this.players[obj['id']]
             var playerPos = player.get('position');
-            
+
             playerPos.x = obj.position[0];
             playerPos.y = obj.position[1];
-            player.set('position', playerPos);            
+            player.set('position', playerPos);
 
             this.setPlayerVelocity(obj['id'], [obj.velocity[0], obj.velocity[1]])
         }
@@ -82,7 +83,7 @@ var Footie = cocos.nodes.Layer.extend({
     },
 
     setPlayerVelocity: function(player_id, vector ){
-        
+
         var player = this.players[player_id]
         var playerPos = player.get('position');
         player.setVelocity(new geom.Point(vector[0], vector[1]));
@@ -96,13 +97,13 @@ var Footie = cocos.nodes.Layer.extend({
             case 'Right':
                 this.setPlayerVelocity(currentPlayer, [5, 0])
                 break;
-            case 'Left': 
+            case 'Left':
                 this.setPlayerVelocity(currentPlayer, [-5, 0])
                 break;
-            case 'Up': 
+            case 'Up':
                 this.setPlayerVelocity(currentPlayer, [0, -5])
                 break;
-            case 'Down': 
+            case 'Down':
                 this.setPlayerVelocity(currentPlayer, [0, 5])
                 break;
 
