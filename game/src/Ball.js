@@ -22,6 +22,14 @@ var Ball = cocos.nodes.Node.extend({
 
     },
 
+    getPosition: function () {
+        var pos = this.get("position");
+        return {
+            position: [pos.x, pos.y],
+            velocity: [this.get("velocity"), this.get("rotation")]
+        };
+    },
+
     update: function(dt) {
         var pos = util.copy(this.get('position')),
             vel = util.copy(this.get('velocity'));

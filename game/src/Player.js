@@ -1,5 +1,5 @@
 var cocos = require('cocos2d'),
-    geom = require('geometry'), 
+    geom = require('geometry'),
     util = require('util');
 
 var Player = cocos.nodes.Node.extend({
@@ -19,11 +19,11 @@ var Player = cocos.nodes.Node.extend({
         this.set('contentSize', sprite.get('contentSize'));
         this.set('velocity', new geom.Point(0,0));
         this.scheduleUpdate();
-    }, 
-    
+    },
+
     setVelocity: function(vel){
         this.set('velocity', vel);
-        
+
         if(vel.x == 0){
             if (vel.y >= 0){
                 this.set('rotation', 180);
@@ -50,8 +50,16 @@ var Player = cocos.nodes.Node.extend({
             pos.x += dt * vel.x;
             pos.y += dt * vel.y;
             this.set('position', pos);
-            }
-    
+    },
+
+    getPosition: function () {
+        var pos = this.get("position");
+        return {
+            position: [pos.x, pos.y],
+            velocity: [this.get("velocity"), this.get("rotation")]
+        };
+    }
+
 });
 
 module.exports = Player;

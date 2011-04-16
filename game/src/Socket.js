@@ -34,6 +34,12 @@ Socket.prototype = {
         }
     },
 
+    onGameUpdate: function (callback) {
+        this.sock.onmessage = function (e) {
+            callback(JSON.parse(e.data));
+        }
+    },
+
     getPlayerId: function () {
         if (this._playerId === undefined) {
             this._playerId = 'player_' + parseInt(Math.random() * 1000);

@@ -9,7 +9,18 @@ var cocos = require('cocos2d'),
     speed = 100;
 
 var socket = new Socket();
-var gameState = {};
+var gameState = {players: {}, ball: null};
+
+var sockSync = setInterval(function () {
+    // sync state
+    socket.send(gameState);
+}, 1000);
+
+socket.onGameUpdate(function (gs) {
+    gameState = gs;
+});
+
+
 
 // Create a new layer
 var Footie = cocos.nodes.Layer.extend({
@@ -29,7 +40,7 @@ var Footie = cocos.nodes.Layer.extend({
         var s = cocos.Director.get('sharedDirector').get('winSize');
 
         var currentPlayer = "player1" //socket.getPlayerId();
-        
+
         this.set('currentPlayer', currentPlayer)
         this.createPlayer({'position':[160,280], 'velocity':[0,0], 'id': currentPlayer})
 
@@ -49,6 +60,8 @@ var Footie = cocos.nodes.Layer.extend({
         player.set('velocity', new geom.Point(obj.velocity[0], obj.velocity[1]))
         this.addChild({child: player})
         this.players[obj['id']] = player
+
+        gameState.players[obj.id] = player.getPosition();
     },
 
     /**
@@ -62,9 +75,9 @@ var Footie = cocos.nodes.Layer.extend({
         for( var key in state['players']){
 
             if(this.players[key]===undefined){
-                this.createPlayer(player)                
+                this.createPlayer(player)
             }else{
-    
+
                 var obj = this.players[key]
 
                 var player = this.players[obj['id']]
@@ -74,10 +87,12 @@ var Footie = cocos.nodes.Layer.extend({
                 playerPos.y = obj.position[1];
                 player.set('position', playerPos);
 
-                this.setPlayerVelocity(obj['id'], [obj.velocity[0], obj.velocity[1]])                
+                this.setPlayerVelocity(obj['id'], [obj.velocity[0], obj.velocity[1]])
             }
 
 
+            this.setPlayerVelocity(obj['id'], [obj.velocity[0], obj.velocity[1]])
+            gameState[obj.id] = player;
         }
 
         var obj = state.ball
@@ -87,6 +102,7 @@ var Footie = cocos.nodes.Layer.extend({
 
         ball.set('velocity', new geom.Point(60, 120));
 
+        gameState.ball = ball.getPosition();
     },
 
     setPlayerVelocity: function(player_id, vector ){
@@ -130,6 +146,7 @@ var Footie = cocos.nodes.Layer.extend({
     },
 
     keyUp: function(evt) {
+<<<<<<< HEAD
 
         console.log('keyUp', evt.keyIdentifier)
 
@@ -155,6 +172,10 @@ var Footie = cocos.nodes.Layer.extend({
         // sync state
         socket.send(gameState);
 
+=======
+        var currentPlayer = this.get('currentPlayer')
+        this.setPlayerVelocity(currentPlayer, [0, 0])
+>>>>>>> position update
     },
 
     restart: function() {
