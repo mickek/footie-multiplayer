@@ -3,7 +3,7 @@ var ws = require("websocket-server");
 
 var nop = function () {};
 
-var BROADCAST_INTERVAL = 100;
+var BROADCAST_INTERVAL = 10;
 var OVERLORD_SERVER = {
     address: 'http://footieapp.appspot.com',
     port: 80
@@ -48,7 +48,7 @@ server.addListener("connection", function(client){
         }
 
         //console.log('>>> ', JSON.stringify(gameState));
-        server.broadcast(JSON.stringify(gameState));
+        //server.broadcast(JSON.stringify(gameState));
     });
 });
 
