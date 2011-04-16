@@ -2,12 +2,13 @@ var ws = require("websocket-server");
 var server = ws.createServer();
 
 
-server.addListener("connection", function(connection){
-    console.log("connected");
+server.addListener("connection", function(client){
 
-    connection.addListener("message", function(msg){
-        console.log("sending back: ", msg);
+    client.addListener("message", function(msg){
+        // send to all
         server.broadcast(msg);
+
+        client.send("you crazy coder!");
     });
 });
 
