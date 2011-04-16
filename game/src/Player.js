@@ -23,9 +23,21 @@ var Player = cocos.nodes.Node.extend({
     
     setVelocity: function(vel){
         this.set('velocity', vel);
-        var rad = Math.atan(vel.y/vel.x);
-        rad = rad * (360 / Math.PI)
-        this.set('rotation', rad);
+        
+        if(vel.x == 0){
+            if (vel.y >0){
+                this.set('rotation', 0);
+            }
+            if(vel.x <= 0){
+                this.set('rotation', 180);
+            }
+        }
+        
+        else{
+            var rad = Math.atan(vel.y/vel.x);
+            rad = rad * (360 / (2*Math.PI) )
+            this.set('rotation', rad);
+        }
     },
 
     update: function(dt){
@@ -34,7 +46,7 @@ var Player = cocos.nodes.Node.extend({
 
             pos.x += dt * vel.x;
             pos.y += dt * vel.y;
-            this.set('position', pos)
+            this.set('position', pos);
             }
     
 });
