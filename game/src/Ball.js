@@ -26,27 +26,32 @@ var Ball = cocos.nodes.Node.extend({
         var pos = util.copy(this.get('position')),
             vel = util.copy(this.get('velocity'));
 
-        // Test X position
-        if (!this.testBlockCollision('x', dt * vel.x)) {
-            // Adjust X position
+        var f = 0.22;
+        vel.x -=  ((vel.x<0)? -f: f) * Math.abs(vel.x) * dt;
+        if (Math.abs(vel.x)<10) { vel.x = 0; }
+        else {
             pos.x += dt * vel.x;
-            this.set('position', pos);
         }
 
-
-        // Test Y position
-        if (!this.testBlockCollision('y', dt * vel.y)) {
-            // Adjust Y position
+        vel.y -=  ((vel.y<0)? -f:f) * Math.abs(vel.y) * dt;
+        if (Math.abs(vel.y)<10) { vel.y = 0; }
+        else {
             pos.y += dt * vel.y;
-            this.set('position', pos);
         }
 
-        // Test Edges and bat
-        this.testBatCollision();
+        this.set('position', pos);
+        this.set('velocity', vel);
+        this.testPlayers();
         this.testEdgeCollision();
     },
 
-    testBatCollision: function() {
+    testPlayers: function() {
+    return;
+
+        var players = this.get('parent').get('players');
+        var i, playerBox;
+    //    for(i=0; i<players.length; i++) {
+     //       playerBox =
         var vel = util.copy(this.get('velocity')),
             ballBox = this.get('boundingBox'),
             // The parent of the ball is the Breakout Layer, which has a 'bat'
@@ -90,11 +95,9 @@ var Ball = cocos.nodes.Node.extend({
         }
 
         // Moving down and hit bottom edge - DEATH
-        if (vel.y > 0 && geom.rectGetMinY(ballBox) > winSize.height) {
-            // Restart game
-            this.get('parent').restart();
+        if (vel.y > 0 && geom.rectGetMaxY(ballBox) > winSize.height) {
+            vel.y *= -1;
         }
-
         this.set('velocity', vel);
     },
 

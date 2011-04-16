@@ -30,12 +30,14 @@ var Footie = cocos.nodes.Layer.extend({
         this.set('currentPlayer', 'player0')
         this.createPlayer( {'x':160,'y':280, 'id':'player0'} )
 
+        this.set('size', s);
+        
         // // Add Ball
-        // var ball = Ball.create();
-        // ball.set('position', new geom.Point(140, 210));
-        // this.addChild({child: ball});
-        // this.set('ball', ball);
-    },
+        var ball = Ball.create();
+        ball.set('position', new geom.Point((s.width * 0.5), (s.height * 0.5)));
+        ball.set('velocity', new geom.Point(35, 35));
+        this.addChild({child: ball});
+        this.set('ball', ball);
 
     createPlayer: function(obj){
 
