@@ -49,7 +49,6 @@ var Footie = cocos.nodes.Layer.extend({
         
         for(var key in players){
             var obj = players[key]
-            console.log(obj)
 
             var player = Player.create()
             player.set('position', new geom.Point(obj['x'], obj['y']))
@@ -64,15 +63,36 @@ var Footie = cocos.nodes.Layer.extend({
             
     },
 
+    /** 
+     * expects smth like: { 'players': [{'id':'someid', position:[0,0], velocity: [0,0]}, {...}], 'ball': {position:[0,0], velocity:[0,0]} }
+     */
     updateState: function(state) {
-        var player = this.get('player');
-        var playerPos = player.get('position');
-        playerPos.x = state.x;
-        playerPos.y = state.y;
-        player.set('position', playerPos);
+
+        // for every player set his position and velocity
+        // set ball position and velocity
+
+        for( var key in state['players']){
+            var obj = players[key]
+            var player = this.get(obj['id'])
+            var playerPos = player.get('position');
+            
+            playerPos.x = obj.position[0];
+            playerPos.y = obj.position[1];
+            player.set('position', playerPos);            
+
+            this.setPlayerVelocity(obj['id'], [obj.velocity[0], obj.velocity[1]])
+        }
+
+        var obj = state.ball
+        var ballPos = this.ball.get('position');
+        ballPos.x = obj.position[0];
+        ballPos.y = obj.position[1];
+
+
+
     },
 
-    movePlayer: function(player_id, dt){
+    setPlayerVelocity: function(player_id, dt){
         var player = this.get(player_id)
         var playerPos = player.get('position');
 
@@ -87,32 +107,33 @@ var Footie = cocos.nodes.Layer.extend({
 
         switch(evt.keyIdentifier){
             case 'Right':
-                this.movePlayer(currentPlayer, [5, 0])
+                this.setPlayerVelocity(currentPlayer, [5, 0])
                 break;
             case 'Left': 
-                this.movePlayer(currentPlayer, [-5, 0])
+                this.setPlayerVelocity(currentPlayer, [-5, 0])
                 break;
             case 'Up': 
-                this.movePlayer(currentPlayer, [0, -5])
+                this.setPlayerVelocity(currentPlayer, [0, -5])
                 break;
             case 'Down': 
-                this.movePlayer(currentPlayer, [0, 5])
+                this.setPlayerVelocity(currentPlayer, [0, 5])
                 break;
 
             default: break;
+        }
 
+        if(evt.keyCode == 32){
+            // space clicked kick the ball
         }
     },
 
     keyUp: function(evt) {
 
         var currentPlayer = this.get('current_player')
-        this.movePlayer(currentPlayer, [0, 0])
+        this.setPlayerVelocity(currentPlayer, [0, 0])
         console.log('player stop')
 
     },
-
-
 
     restart: function() {
         var director = cocos.Director.get('sharedDirector');
