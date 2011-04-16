@@ -126,7 +126,7 @@ var Footie = cocos.nodes.Layer.extend({
 
         // kicking by space
         if(evt.keyCode == 32){
-            this.players[currentPlayer].isKicking = false
+            this.players[currentPlayer].isKicking = true;
         }
     },
 
@@ -151,6 +151,9 @@ var Footie = cocos.nodes.Layer.extend({
             default: break;
         }
 
+        if(evt.keyCode == 32){
+            this.players[currentPlayer].isKicking = false;
+        }
         // sync state
         socket.send(gameState);
 

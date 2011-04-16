@@ -7,7 +7,7 @@ function normalize(vec) {
         y = vec.y;
 
     var len = Math.sqrt( x*x + y*y);
-    return new geom.Point(x/len, y/len);
+    return new geom.Point(x/len || 0, y/len || 0);
 }
 
 
@@ -44,7 +44,7 @@ var Ball = cocos.nodes.Node.extend({
         var pos = util.copy(this.get('position')),
             vel = util.copy(this.get('velocity'));
 
-        var f = 0.22;
+        var f = 0.45;
         vel.x -=  ((vel.x<0)? -f: f) * Math.abs(vel.x) * dt;
         if (Math.abs(vel.x)<10) { vel.x = 0; }
         else {
@@ -76,7 +76,7 @@ var Ball = cocos.nodes.Node.extend({
            if (geom.rectOverlapsRect(ballBox, playerBox)) {
                playerVel = player.get('velocity');
                collisions += 1;
-               var f = (player.isKicking)? 250 : 150;
+               var f = (player.isKicking)? 350 : 120;
                //vel.x += f;
                //vel.y += f;
                var force = normalize(playerVel);
