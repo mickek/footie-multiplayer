@@ -26,15 +26,19 @@ var Player = cocos.nodes.Node.extend({
         
         if(vel.x == 0){
             if (vel.y >= 0){
-                this.set('rotation', 0);
+                this.set('rotation', 180);
             }
             if(vel.y <= 0){
-                this.set('rotation', 180);
+                this.set('rotation', 0);
             }
         }
         else{
             var rad = Math.atan(vel.y/vel.x);
-            rad = rad * (360 / (2*Math.PI) );
+
+            rad = rad * (360 / (2*Math.PI) )+90;
+            if (vel.x < 0){
+                rad+=180;
+            }
             this.set('rotation', rad);
         }
     },
