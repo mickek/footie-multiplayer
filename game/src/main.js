@@ -135,6 +135,8 @@ var Footie = cocos.nodes.Layer.extend({
             default: break;
         }
 
+        socket.send(gameState());
+
         // kicking by space
         if(evt.keyCode == 32){
             this.players[currentPlayer].isKicking = true;
