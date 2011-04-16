@@ -13,7 +13,10 @@ var Player = cocos.nodes.Node.extend({
         sprite.set('anchorPoint', new geom.Point(0, 0));
         this.addChild({child: sprite});
         this.set('contentSize', sprite.get('contentSize'));
-    
+    }, 
+    setVelocity(vel){
+        this.set('velocity', vel);
+    }   
 });
 
 module.exports = Player;
