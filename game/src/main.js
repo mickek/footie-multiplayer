@@ -28,6 +28,8 @@ var Footie = cocos.nodes.Layer.extend({
         this.addChild({child: player});
         this.set('player', player);
 
+        this.createPlayers([{'x':160,'y':280, 'id':'player'}])
+
 
         // // Add Ball
         // var ball = Ball.create();
@@ -45,6 +47,10 @@ var Footie = cocos.nodes.Layer.extend({
 
     createPlayers: function(players){
         
+        for(player in players){
+            console.log(player)
+        }
+            
     },
 
     updateState: function(state) {
