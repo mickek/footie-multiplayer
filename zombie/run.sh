@@ -1,1 +1,0 @@
-java -jar ./setup/webserver/WebServerLite.jar . 8010
