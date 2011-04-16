@@ -7,16 +7,12 @@ var Socket = function (addr) {
     }
 
     sock.onopen = function (e) {
-        console.log(e);
     }
     sock.onclose = function (e) {
-        console.log(e);
     }
     sock.onmessage = function (e) {
-        console.log(e);
     }
     sock.onerror = function (e) {
-        console.log(e);
     }
 
 
@@ -30,7 +26,11 @@ Socket.prototype = {
             console.error("Socket not ready:", this.sock.readyState);
             return
         }
-        this.sock.send(msg);
+        if (typeof msg !== "string") {
+            this.sock.send(JSON.stringify(msg));
+        } else {
+            this.sock.send(msg);
+        }
     }
 }
 

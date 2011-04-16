@@ -7,7 +7,7 @@ var cocos = require('cocos2d'),
     evt = require('event'),
     Ball = require('Ball');
 
-var socket = Socket();
+var socket = new Socket();
 var gameState = {};
 
 // Create a new layer
@@ -43,7 +43,7 @@ var Footie = cocos.nodes.Layer.extend({
 
     createPlayer: function(obj){
         var player = Player.create()
-        player.set( 'position', new geom.Point(obj['x'], obj['y']) )
+        player.set('position', new geom.Point(obj['x'], obj['y']))
         player.set('velocity', new geom.Point(0,0) )
         this.addChild({child: player})
         this.players[obj['id']] = player
@@ -120,7 +120,9 @@ var Footie = cocos.nodes.Layer.extend({
 
         var currentPlayer = this.get('currentPlayer')
         this.setPlayerVelocity(currentPlayer, [0, 0])
-        console.log('player stop')
+
+        // sync state
+        socket.send(gameState);
 
     },
 
