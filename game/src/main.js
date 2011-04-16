@@ -27,20 +27,21 @@ var Footie = cocos.nodes.Layer.extend({
         // Get size of canvas
         var s = cocos.Director.get('sharedDirector').get('winSize');
 
-        this.set('currentPlayer', 'player0')
-        this.createPlayer( {'x':160,'y':280, 'id':'player0'} )
+        var currentPlayer = 'player0';
+        this.set('currentPlayer', currentPlayer)
+        this.createPlayer({'x':160,'y':280, 'id': currentPlayer})
 
         this.set('size', s);
-        
+
         // // Add Ball
         var ball = Ball.create();
         ball.set('position', new geom.Point((s.width * 0.5), (s.height * 0.5)));
         ball.set('velocity', new geom.Point(35, 35));
         this.addChild({child: ball});
         this.set('ball', ball);
+    },
 
     createPlayer: function(obj){
-
         var player = Player.create()
         player.set( 'position', new geom.Point(obj['x'], obj['y']) )
         player.set('velocity', new geom.Point(0,0) )
