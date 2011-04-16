@@ -9,17 +9,6 @@ var cocos = require('cocos2d'),
     speed = 100;
 
 var socket = new Socket();
-var gameState = {players: {}, ball: null};
-
-var sockSync = setInterval(function () {
-    // sync state
-    socket.send(gameState);
-}, 1000);
-
-socket.onGameUpdate(function (gs) {
-    gameState = gs;
-});
-
 
 
 // Create a new layer
@@ -60,8 +49,6 @@ var Footie = cocos.nodes.Layer.extend({
         player.set('velocity', new geom.Point(obj.velocity[0], obj.velocity[1]))
         this.addChild({child: player})
         this.players[obj['id']] = player
-
-        gameState.players[obj.id] = player.getPosition();
     },
 
     /**
@@ -72,7 +59,7 @@ var Footie = cocos.nodes.Layer.extend({
         // for every player set his position and velocity
         // set ball position and velocity
 
-        for( var key in state['players']){
+        for (var key in state['players']){
 
             if(this.players[key]===undefined){
                 this.createPlayer(player)
@@ -92,7 +79,6 @@ var Footie = cocos.nodes.Layer.extend({
 
 
             this.setPlayerVelocity(obj['id'], [obj.velocity[0], obj.velocity[1]])
-            gameState[obj.id] = player;
         }
 
         var obj = state.ball
@@ -101,8 +87,6 @@ var Footie = cocos.nodes.Layer.extend({
         ballPos.y = obj.position[1];
 
         ball.set('velocity', new geom.Point(60, 120));
-
-        gameState.ball = ball.getPosition();
     },
 
     setPlayerVelocity: function(player_id, vector ){
@@ -194,7 +178,32 @@ director.attachInView(document.getElementById('footie-demo'));
 var scene = cocos.nodes.Scene.create();
 
 // Add our layer to the scene
-scene.addChild({child: Footie.create()});
+footie = Footie.create();
+scene.addChild({child: footie});
+
+var gameState = function () {
+    var players = [];
+    for (var p in footie.players) {
+        players.push[footie.players[p].getPosition()];
+    }
+    state = {
+        players: players,
+        ball: this.ball.getPosition()
+    }
+    return state;
+}
+
+var sockSync = setInterval(function () {
+    // sync state
+    socket.send(gameState());
+}, 1000);
+
+socket.onGameUpdate(function (gs) {
+    // todo
+    gameState = gs;
+    footie.updateState(gameState());
+});
+
 
 // Run the scene
 director.runWithScene(scene);

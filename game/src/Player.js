@@ -54,9 +54,10 @@ var Player = cocos.nodes.Node.extend({
 
     getPosition: function () {
         var pos = this.get("position");
+        var v = this.get("velocity");
         return {
             position: [pos.x, pos.y],
-            velocity: [this.get("velocity"), this.get("rotation")]
+            velocity: [v.x, v.y]
         };
     }
 
