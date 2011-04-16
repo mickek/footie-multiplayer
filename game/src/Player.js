@@ -14,7 +14,7 @@ var Player = cocos.nodes.Node.extend({
         this.addChild({child: sprite});
         this.set('contentSize', sprite.get('contentSize'));
     }, 
-    setVelocity(vel){
+    setVelocity: function(vel){
         this.set('velocity', vel);
     }   
 });
