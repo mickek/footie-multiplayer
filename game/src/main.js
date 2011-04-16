@@ -16,7 +16,7 @@ var Breakout = cocos.nodes.Layer.extend({
 
 
         this.set('isMouseEnabled', true);
-        this.set('isKeybordEnabled', true);
+        this.set('isKeyboardEnabled', true);
 
         // Get size of canvas
         var s = cocos.Director.get('sharedDirector').get('winSize');
@@ -64,6 +64,11 @@ var Breakout = cocos.nodes.Layer.extend({
         bat.set('position', batPos);
 
     },
+
+    keyDown: function(evt) {
+        console.log(evt)
+    },
+
 
     restart: function() {
         var director = cocos.Director.get('sharedDirector');
