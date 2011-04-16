@@ -166,7 +166,7 @@ var Footie = cocos.nodes.Layer.extend({
             this.players[currentPlayer].isKicking = false;
         }
         // sync state
-        socket.send(gameState);
+        socket.send(gameState());
 
         var currentPlayer = this.get('currentPlayer')
         this.setPlayerVelocity(currentPlayer, [0, 0])
