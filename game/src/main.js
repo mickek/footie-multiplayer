@@ -188,11 +188,9 @@ scene.addChild({child: footie});
 
 var gameState = function () {
     var players = {};
-    for (var p in footie.players) {
-        players[p] = footie.players[p].getPosition()
-    }
 
     state = {
+        id: footie.currentPlayer,
         player: footie.players[footie.currentPlayer].getPosition(),
         ball: footie.ball.getPosition()
     }
