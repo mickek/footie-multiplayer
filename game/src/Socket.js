@@ -25,7 +25,7 @@ Socket.prototype = {
     send: function (msg) {
         if (this.sock.readyState !== 1) {
             console.error("Socket not ready:", this.sock.readyState);
-            return
+            return;
         }
         if (typeof msg !== "string") {
             this.sock.send(JSON.stringify(msg));

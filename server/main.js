@@ -9,7 +9,7 @@ var OVERLORD_SERVER = {
     port: 80
 }
 var clients = {};
-var gameState = {};
+var gameState = {players: {}};
 
 var registerServer = function (listeningOn) {
     var req = http.request({
@@ -36,12 +36,22 @@ server.listen(8080);
 server.addListener("connection", function(client){
     // register
     clients[client.id] = client;
+    client.send(JSON.stringify({playerid: client.id}));
 
     client.addListener("message", function(msg){
         // send to all
         console.log("new mesage", msg);
-        server.broadcast(msg);
+        try {
+        var userData = JSON.parse(msg);
+        gameState.players[client.id] = userData.player;
+        gameState.ball = userData.ball;
+        } catch(e) {
+            console.log('err', msg);
+        }
+
+        server.broadcast(JSON.stringify(gameState));
     });
+
     client.addListener("close", function () {
         delete clients[client.id];
     });

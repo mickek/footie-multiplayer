@@ -28,7 +28,7 @@ var Footie = cocos.nodes.Layer.extend({
         // Get size of canvas
         var s = cocos.Director.get('sharedDirector').get('winSize');
 
-        var currentPlayer = "player1" //socket.getPlayerId();
+        var currentPlayer = socket.getPlayerId();
 
         this.set('currentPlayer', currentPlayer)
         this.createPlayer({'position':[160,280], 'velocity':[0,0], 'id': currentPlayer})
@@ -200,7 +200,6 @@ var sockSync = setInterval(function () {
 
 socket.onGameUpdate(function (gs) {
     // todo
-    gameState = gs;
     footie.updateState(gameState());
 });
 
