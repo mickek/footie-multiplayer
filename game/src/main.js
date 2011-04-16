@@ -24,7 +24,7 @@ var Footie = cocos.nodes.Layer.extend({
         var s = cocos.Director.get('sharedDirector').get('winSize');
 
         this.set('currentPlayer', 'player0')
-        this.createPlayers( {'x':160,'y':280, 'id':'player0'} )
+        this.createPlayer( {'x':160,'y':280, 'id':'player0'} )
 
         // // Add Ball
         // var ball = Ball.create();
