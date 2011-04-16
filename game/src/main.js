@@ -6,6 +6,7 @@ var cocos = require('cocos2d'),
     Socket = require('Socket'),
     evt = require('event'),
     Ball = require('Ball'),
+    Net = require('Net'),
     speed = 100;
 
 var socket = new Socket();
@@ -34,14 +35,20 @@ var Footie = cocos.nodes.Layer.extend({
 
         this.set('currentPlayer', currentPlayer)
         this.createPlayer({'position':[160,280], 'velocity':[0,0], 'id': currentPlayer})
-
+        
         this.set('size', s);
 
         // // Add Ball
         var ball = Ball.create();
         ball.set('position', new geom.Point((s.width * 0.5), (s.height * 0.5)));
         ball.set('velocity', new geom.Point(35, 35));
+        var net1 = Net.create();
+        net1.set('position', new geom.Point(0, (s.height * 0.5 - 8)));
+        var net2 = Net.create();
+        net2.set('position', new geom.Point(s.width , (s.height * 0.5 - 8)));
         this.addChild({child: ball});
+        this.addChild({child: net1});
+        this.addChild({child: net2});
         this.set('ball', ball);
     },
 

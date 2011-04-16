@@ -20,7 +20,6 @@ var Player = cocos.nodes.Node.extend({
         this.set('velocity', new geom.Point(0,0));
         this.scheduleUpdate();
     },
-
     setVelocity: function(vel){
         this.set('velocity', vel);
 
