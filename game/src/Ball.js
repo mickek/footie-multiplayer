@@ -81,16 +81,17 @@ var Ball = cocos.nodes.Node.extend({
                //vel.x += f;
                //vel.y += f;
                var force = normalize(playerVel);
-               ax += force.x * f;
-               ay += force.y * f;
+               //ax += force.x * f;
+               //ay += force.y * f;
+               vel.x = force.x * f;
+               vel.y = force.y * f;
+              break;
            }
         }
         if (collisions) {
-        vel.x += ax / collisions;
-        vel.y += ay / collisions;
-        }
-        // Update position and velocity on the ball
         this.set('velocity', vel);
+        this.get('parent').syncGameState();
+        }
     },
 
     testEdgeCollision: function() {
