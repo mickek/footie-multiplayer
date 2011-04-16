@@ -61,14 +61,15 @@ var Footie = cocos.nodes.Layer.extend({
 
         for (var key in state['players']){
 
+
             if(this.players[key]===undefined){
-                this.createPlayer(player)
+                console.log('create-player', state['players'][key])
+                this.createPlayer(state['players'][key])
             }else{
 
                 var obj = state['players'][key]
-                var player = this.players[key]
-
-                console.log(obj, player)
+                var player = this.players[key]                
+                
 
                 var playerPos = player.get('position');
 
@@ -76,11 +77,14 @@ var Footie = cocos.nodes.Layer.extend({
                 playerPos.y = obj.position[1];
                 player.set('position', playerPos);
 
-                this.setPlayerVelocity(obj['id'], [obj.velocity[0], obj.velocity[1]])
+                var playerVel = player.get('velocity');
+
+                playerPos.x = obj.velocity[0];
+                playerPos.y = obj.velocity[1];
+                player.set('velocity', playerVel);
+
             }
 
-
-            this.setPlayerVelocity(obj['id'], [obj.velocity[0], obj.velocity[1]])
         }
 
         var obj = state.ball
