@@ -10,7 +10,7 @@ var Footie = cocos.nodes.Layer.extend({
 
     ball: null,
 
-    players_list: [],
+    players: {},
 
     init: function() {
         // You must always call the super class version of init
@@ -23,13 +23,8 @@ var Footie = cocos.nodes.Layer.extend({
         // Get size of canvas
         var s = cocos.Director.get('sharedDirector').get('winSize');
 
-        this.set('current_player', 'player0')
-
-        this.createPlayers([
-            {'x':160,'y':280, 'id':'player0'},
-            {'x':140,'y':180, 'id':'player1'},
-        ])
-
+        this.set('currentPlayer', 'player0')
+        this.createPlayers( {'x':160,'y':280, 'id':'player0'} )
 
         // // Add Ball
         // var ball = Ball.create();
@@ -45,21 +40,14 @@ var Footie = cocos.nodes.Layer.extend({
 
     },
 
-    createPlayers: function(players){
+    createPlayer: function(player){
         
-        for(var key in players){
-            var obj = players[key]
-
-            var player = Player.create()
-            player.set('position', new geom.Point(obj['x'], obj['y']))
-            this.addChild({child: player})
-            this.set(obj['id'],player)
-
-            if(this.players_list.indexOf(obj['id'])<0){
-                this.players_list.push(obj['id'])    
-            }
-
-        }
+        var player = Player.create()
+        player.set('position', new geom.Point(obj['x'], obj['y']))
+        player.set('velocity', new geom.Point(0,0))
+        this.addChild({child: player})
+        
+        this.players[obj['id']] = player
             
     },
 
@@ -72,8 +60,10 @@ var Footie = cocos.nodes.Layer.extend({
         // set ball position and velocity
 
         for( var key in state['players']){
+
             var obj = players[key]
-            var player = this.get(obj['id'])
+            
+            var player = this.players[obj['id']]
             var playerPos = player.get('position');
             
             playerPos.x = obj.position[0];
@@ -92,16 +82,16 @@ var Footie = cocos.nodes.Layer.extend({
 
     },
 
-    setPlayerVelocity: function(player_id, dt){
-        var player = this.get(player_id)
+    setPlayerVelocity: function(player_id, vector ){
+        
+        var player = this.players[player_id]
         var playerPos = player.get('position');
-
-        player.setVelocity(new geom.Point(dt[0], dt[1]));
+        player.setVelocity(new geom.Point(vector[0], vector[1]));
     },
 
     keyDown: function(evt) {
 
-        var currentPlayer = this.get('current_player')
+        var currentPlayer = this.get('currentPlayer')
 
         switch(evt.keyIdentifier){
             case 'Right':
@@ -120,14 +110,15 @@ var Footie = cocos.nodes.Layer.extend({
             default: break;
         }
 
+        // kicking by space
         if(evt.keyCode == 32){
-            this.get(currentPlayer).isKicking = false
+            this.players[currentPlayer].isKicking = false
         }
     },
 
     keyUp: function(evt) {
 
-        var currentPlayer = this.get('current_player')
+        var currentPlayer = this.get('currentPlayer')
         this.setPlayerVelocity(currentPlayer, [0, 0])
         console.log('player stop')
 
