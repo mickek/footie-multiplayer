@@ -15,6 +15,7 @@ var Breakout = cocos.nodes.Layer.extend({
         Breakout.superclass.init.call(this);
 
         this.set('isMouseEnabled', true);
+        this.set('isKeybordEnabled', true);
 
         // Get size of canvas
         var s = cocos.Director.get('sharedDirector').get('winSize');
@@ -27,23 +28,22 @@ var Breakout = cocos.nodes.Layer.extend({
         this.set('bat', bat);
 
 
-        // Add Ball
-        var ball = Ball.create();
-        ball.set('position', new geom.Point(140, 210));
-        this.addChild({child: ball});
-        this.set('ball', ball);
+        // // Add Ball
+        // var ball = Ball.create();
+        // ball.set('position', new geom.Point(140, 210));
+        // this.addChild({child: ball});
+        // this.set('ball', ball);
 
 
-        // Add Map
-        var map = cocos.nodes.TMXTiledMap.create({file: '/resources/level1.tmx'});
-        map.set('position', new geom.Point(0, 0));
-        this.addChild({child: map});
-        this.set('map', map);
+        // // Add Map
+        // var map = cocos.nodes.TMXTiledMap.create({file: '/resources/level1.tmx'});
+        // map.set('position', new geom.Point(0, 0));
+        // this.addChild({child: map});
+        // this.set('map', map);
     },
 
     mouseMoved: function(evt) {
         var bat = this.get('bat');
- 
         var batPos = bat.get('position');
         batPos.x = evt.locationInCanvas.x;
         bat.set('position', batPos);
