@@ -1,0 +1,6 @@
+{
+    "output": "game.js",
+    "paths": {
+        "src" : "/"
+    }
+}

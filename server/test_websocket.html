@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    <title>Demo</title>
+    <style type="text/css" media="screen">
+        #container { height: 300px; border: 1px solid black; padding: 5px; margin: 10px; }
+    </style>
+    <script src="http://code.jquery.com/jquery-1.5.2.min.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body>
+    <div id="container"></div>
+    <input type="text" id="inputbox">
+
+    <script type="text/javascript" charset="utf-8">
+$(function () {
+    var SERVER_ADDR = "ws://192.168.20.79:8080/websocket/";
+    var $box = $('#container');
+    var $inputbox = $('#inputbox');
+    var sock = new WebSocket(SERVER_ADDR);
+
+
+    $inputbox.bind("keypress", function (e) {
+        if (e.keyCode === 13) {
+            if (sock.readyState !== 1) {
+                console.log("WebSocket not ready: ", sock.readyState);
+                return false;
+            }
+            console.log("sending");
+            sock.send($(this).val());
+            $(this).val('');
+        }
+        return true;
+    });
+
+
+    sock.onopen = function (e) {
+        console.log("opening web socket", e);
+        sock.send("Hello!");
+        console.log("done");
+    }
+
+    sock.onclose = function (e) {
+        console.log("socket is closing..", e);
+    }
+
+    sock.onmessage = function(e) {
+        console.log(e);
+        $box.html(function (i, v) {
+                return v + '<p>' + e.data + '</p>';
+        });
+    }
+
+    sock.onerror = function (e) {
+        console.error("you sux", e);
+    }
+});
+    </script>
+</body>
+</html>
