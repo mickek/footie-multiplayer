@@ -172,10 +172,8 @@ var Footie = cocos.nodes.Layer.extend({
         // sync state
         socket.send(gameState);
 
-=======
         var currentPlayer = this.get('currentPlayer')
         this.setPlayerVelocity(currentPlayer, [0, 0])
->>>>>>> position update
     },
 
     restart: function() {
