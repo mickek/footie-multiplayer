@@ -5,7 +5,8 @@ var cocos = require('cocos2d'),
     Player = require('Player'),
     Socket = require('Socket'),
     evt = require('event'),
-    Ball = require('Ball');
+    Ball = require('Ball'),
+    speed = 100;
 
 var socket = new Socket();
 var gameState = {};
@@ -92,14 +93,18 @@ var Footie = cocos.nodes.Layer.extend({
 
         var player = this.players[player_id]
         var playerPos = player.get('position');
-        player.setVelocity(new geom.Point(vector[0], vector[1]));
+        var playerVel = player.get('velocity');
+
+        console.log([playerVel.x, playerVel.y])
+
+        player.setVelocity(new geom.Point(vector[0]+playerVel.x, vector[1]+playerVel.y));
     },
 
     keyDown: function(evt) {
 
         var currentPlayer = this.get('currentPlayer')
 
-        var speed = 100
+        console.log('keyDown', evt.keyIdentifier)
 
         switch(evt.keyIdentifier){
             case 'Right':
@@ -126,8 +131,26 @@ var Footie = cocos.nodes.Layer.extend({
 
     keyUp: function(evt) {
 
+        console.log('keyUp', evt.keyIdentifier)
+
         var currentPlayer = this.get('currentPlayer')
-        this.setPlayerVelocity(currentPlayer, [0, 0])
+
+        switch(evt.keyIdentifier){
+            case 'Right':
+                this.setPlayerVelocity(currentPlayer, [-1*speed, 0])
+                break;
+            case 'Left':
+                this.setPlayerVelocity(currentPlayer, [speed, 0])
+                break;
+            case 'Up':
+                this.setPlayerVelocity(currentPlayer, [0, 1*speed])
+                break;
+            case 'Down':
+                this.setPlayerVelocity(currentPlayer, [0, -1*speed])
+                break;
+
+            default: break;
+        }
 
         // sync state
         socket.send(gameState);
