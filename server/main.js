@@ -8,7 +8,6 @@ var OVERLORD_SERVER = {
     address: 'http://footieapp.appspot.com',
     port: 80
 }
-var clients = {};
 var gameState = {players: {}};
 
 var registerServer = function (listeningOn) {
@@ -35,30 +34,27 @@ server.listen(8080);
 
 server.addListener("connection", function(client){
     // register
-    clients[client.id] = client;
     client.send(JSON.stringify({playerid: client.id}));
 
     client.addListener("message", function(msg){
         // send to all
-        console.log("new mesage", msg);
+        console.log("<<< ", msg);
         try {
-        var userData = JSON.parse(msg);
-        gameState.players[client.id] = userData.player;
-        gameState.ball = userData.ball;
+            var userData = JSON.parse(msg);
+            gameState.players[userData.id] = userData.player;
+            gameState.ball = userData.ball;
         } catch(e) {
-            console.log('err', msg);
+            console.log('ERR', msg);
         }
 
+        console.log('>>> ', JSON.stringify(gameState));
         server.broadcast(JSON.stringify(gameState));
-    });
-
-    client.addListener("close", function () {
-        delete clients[client.id];
     });
 });
 
 
 var broadcaster = setInterval(function () {
+    console.log('>>> ', JSON.stringify(gameState));
     server.broadcast(JSON.stringify(gameState));
 }, BROADCAST_INTERVAL);
 
