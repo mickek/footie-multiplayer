@@ -70,22 +70,25 @@ var Ball = cocos.nodes.Node.extend({
         var players = this.get('parent').get('players');
         var i, playerBox, player, playerVel;
         var collisions = 0;
+        var ax=0, ay=0;
         for(i in players) {
            player = players[i];
            playerBox = player.get('boundingBox');
            if (geom.rectOverlapsRect(ballBox, playerBox)) {
                playerVel = player.get('velocity');
                collisions += 1;
-               var f = (player.isKicking)? 350 : 120;
+               var f = (player.isKicking)? 350 : 150;
                //vel.x += f;
                //vel.y += f;
                var force = normalize(playerVel);
-               vel.x = force.x * f;
-               vel.y = force.y * f;
+               ax += force.x * f;
+               ay += force.y * f;
            }
         }
-        //vel.x /= collisions;
-        //vel.y /= collisions;
+        if (collisions) {
+        vel.x += ax / collisions;
+        vel.y += ay / collisions;
+        }
         // Update position and velocity on the ball
         this.set('velocity', vel);
     },
