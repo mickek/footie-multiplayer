@@ -7,8 +7,10 @@ var cocos = require('cocos2d'),
 
 // Create a new layer
 var Footie = cocos.nodes.Layer.extend({
-    player: null,
+
     ball: null,
+
+    players_list: [],
 
     init: function() {
         // You must always call the super class version of init
@@ -21,14 +23,12 @@ var Footie = cocos.nodes.Layer.extend({
         // Get size of canvas
         var s = cocos.Director.get('sharedDirector').get('winSize');
 
+        this.set('current_player', 'player0')
 
-        // Add player
-        var player = Player.create();
-        player.set('position', new geom.Point(160, 280));
-        this.addChild({child: player});
-        this.set('player', player);
-
-        this.createPlayers([{'x':160,'y':280, 'id':'player'}])
+        this.createPlayers([
+            {'x':160,'y':280, 'id':'player0'},
+            {'x':140,'y':180, 'id':'player1'},
+        ])
 
 
         // // Add Ball
@@ -40,15 +40,26 @@ var Footie = cocos.nodes.Layer.extend({
 
         var that = this;
         setInterval(function() {
-            that.updateState({x:30, y:Math.floor(Math.random() * 50)});
+            // that.updateState({x:30, y:Math.floor(Math.random() * 50)});
         }, 1000);
 
     },
 
     createPlayers: function(players){
         
-        for(player in players){
-            console.log(player)
+        for(var key in players){
+            var obj = players[key]
+            console.log(obj)
+
+            var player = Player.create()
+            player.set('position', new geom.Point(obj['x'], obj['y']))
+            this.addChild({child: player})
+            this.set(obj['id'],player)
+
+            if(this.players_list.indexOf(obj['id'])<0){
+                this.players_list.push(obj['id'])    
+            }
+
         }
             
     },
@@ -61,13 +72,13 @@ var Footie = cocos.nodes.Layer.extend({
         player.set('position', playerPos);
     },
 
-    // mouseMoved: function(evt) {
-    //     var player = this.get('player');
-    //     var playerPos = player.get('position');
-    //     playerPos.x = evt.locationInCanvas.x;
-    //     player.set('position', playerPos);
+    mouseMoved: function(evt) {
+        var player = this.get(this.get('current_player'));
+        var playerPos = player.get('position');
+        playerPos.x = evt.locationInCanvas.x;
+        player.set('position', playerPos);
 
-    // },
+    },
 
     keyDown: function(evt) {
         console.log(evt)
