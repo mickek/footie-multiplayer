@@ -146,8 +146,6 @@ var Footie = cocos.nodes.Layer.extend({
     },
 
     keyUp: function(evt) {
-<<<<<<< HEAD
-
         console.log('keyUp', evt.keyIdentifier)
 
         var currentPlayer = this.get('currentPlayer')
