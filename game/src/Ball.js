@@ -46,26 +46,28 @@ var Ball = cocos.nodes.Node.extend({
     },
 
     testPlayers: function() {
-    return;
-
+        var ballBox = this.get('boundingBox');
+        var vel = util.copy(this.get('velocity'));
         var players = this.get('parent').get('players');
-        var i, playerBox;
-    //    for(i=0; i<players.length; i++) {
-     //       playerBox =
-        var vel = util.copy(this.get('velocity')),
-            ballBox = this.get('boundingBox'),
-            // The parent of the ball is the Breakout Layer, which has a 'bat'
-            // property pointing to the player's bat.
-            batBox = this.get('parent').get('bat').get('boundingBox');
+        var i, playerBox, player, playerVel;
+        var collisions = 0;
+        for(i in players) {
+           player = players[i];
+           playerBox = player.get('boundingBox');
+           if (geom.rectOverlapsRect(ballBox, playerBox)) {
+               playerVel = player.get('velocity');
+               console.log("collision");
+               collisions += 1;
+               var f = (player.isKicking)? 35 : 15;
+               //vel.x += f;
+               //vel.y += f;
 
-        // If moving down then check for collision with the bat
-        if (vel.y > 0) {
-            if (geom.rectOverlapsRect(ballBox, batBox)) {
-                // Flip Y velocity
-                vel.y *= -1;
-            }
+               vel.x = playerVel.x*2;
+               vel.y = playerVel.y*2;
+           }
         }
-
+        //vel.x /= collisions;
+        //vel.y /= collisions;
         // Update position and velocity on the ball
         this.set('velocity', vel);
     },
