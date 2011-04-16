@@ -111,16 +111,12 @@ var Footie = cocos.nodes.Layer.extend({
         var playerPos = player.get('position');
         var playerVel = player.get('velocity');
 
-        console.log([playerVel.x, playerVel.y])
-
         player.setVelocity(new geom.Point(vector[0]+playerVel.x, vector[1]+playerVel.y));
     },
 
     keyDown: function(evt) {
 
         var currentPlayer = this.get('currentPlayer')
-
-        console.log('keyDown', evt.keyIdentifier)
 
         switch(evt.keyIdentifier){
             case 'Right':
@@ -146,7 +142,6 @@ var Footie = cocos.nodes.Layer.extend({
     },
 
     keyUp: function(evt) {
-        console.log('keyUp', evt.keyIdentifier)
 
         var currentPlayer = this.get('currentPlayer')
 
