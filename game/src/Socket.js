@@ -1,4 +1,5 @@
 var Socket = function (addr) {
+    var that = this;
     var sock;
     if (addr !== undefined) {
         sock = new WebSocket(addr);
@@ -31,6 +32,13 @@ Socket.prototype = {
         } else {
             this.sock.send(msg);
         }
+    },
+
+    getPlayerId: function () {
+        if (this._playerId === undefined) {
+            this._playerId = 'player_' + parseInt(Math.random() * 1000);
+        }
+        return this._playerId;
     }
 }
 
