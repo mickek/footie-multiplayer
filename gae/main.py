@@ -1,17 +1,7 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
+from handlers import ServerListHandler
 
-
-
-
-
-
-
-
-
-class ServerListHandler(webapp.RequestHandler):
-    def get(self):
-        pass
 
 
 def main():
