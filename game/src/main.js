@@ -88,7 +88,7 @@ var Footie = cocos.nodes.Layer.extend({
         ballPos.x = obj.position[0];
         ballPos.y = obj.position[1];
 
-
+        ball.set('velocity', new geom.Point(60, 120));
 
     },
 
@@ -102,8 +102,6 @@ var Footie = cocos.nodes.Layer.extend({
     keyDown: function(evt) {
 
         var currentPlayer = this.get('current_player')
-
-        console.log(evt)
 
         switch(evt.keyIdentifier){
             case 'Right':
@@ -123,7 +121,7 @@ var Footie = cocos.nodes.Layer.extend({
         }
 
         if(evt.keyCode == 32){
-            // space clicked kick the ball
+            this.get(currentPlayer).isKicking = false
         }
     },
 

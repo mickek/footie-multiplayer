@@ -2,6 +2,9 @@ var cocos = require('cocos2d'),
     geom = require('geometry');
 
 var Player = cocos.nodes.Node.extend({
+
+    isKicking: false,
+
     init: function() {
         Player.superclass.init.call(this);
 
@@ -14,9 +17,11 @@ var Player = cocos.nodes.Node.extend({
         this.addChild({child: sprite});
         this.set('contentSize', sprite.get('contentSize'));
     }, 
+    
     setVelocity: function(vel){
         this.set('velocity', vel);
     }   
+
 });
 
 module.exports = Player;
