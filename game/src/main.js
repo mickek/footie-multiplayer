@@ -76,9 +76,6 @@ var Footie = cocos.nodes.Layer.extend({
                     var obj = state['players'][key]
                     var player = this.players[key]                
                     
-                    
-                    console.log('updatestat', obj, player)                
-
                     var playerPos = player.get('position');
 
                     playerPos.x = obj.position[0];
@@ -87,9 +84,9 @@ var Footie = cocos.nodes.Layer.extend({
 
                     var playerVel = player.get('velocity');
 
-                    playerVel.x = obj.velocity[0];
-                    playerVel.y = obj.velocity[1];
-                    player.set('velocity', playerVel);
+                    // playerVel.x = obj.velocity[0];
+                    // playerVel.y = obj.velocity[1];
+                    // player.set('velocity', playerVel);
 
                 }
 
@@ -217,7 +214,7 @@ var gameState = function () {
 var sockSync = setInterval(function () {
     // sync state
     var gs = gameState()
-    // console.log('sending', gs)
+    console.log('sending', gs)
     socket.send(gs);
 }, 1000);
 
