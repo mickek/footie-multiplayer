@@ -84,9 +84,9 @@ var Footie = cocos.nodes.Layer.extend({
 
                     var playerVel = player.get('velocity');
 
-                    // playerVel.x = obj.velocity[0];
-                    // playerVel.y = obj.velocity[1];
-                    // player.set('velocity', playerVel);
+                    playerVel.x = obj.velocity[0];
+                    playerVel.y = obj.velocity[1];
+                    player.set('velocity', playerVel);
 
                 }
 
