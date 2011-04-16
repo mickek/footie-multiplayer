@@ -217,9 +217,8 @@ var gameState = function () {
 var sockSync = setInterval(function () {
     // sync state
     var gs = gameState()
-    console.log('sending', gs)
     socket.send(gs);
-}, 1000);
+}, 100);
 
 socket.onGameUpdate(function (gs) {
     // todo
