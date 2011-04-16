@@ -27,9 +27,10 @@ var Footie = cocos.nodes.Layer.extend({
         // Get size of canvas
         var s = cocos.Director.get('sharedDirector').get('winSize');
 
-        var currentPlayer = 'player0';
+        var currentPlayer = "player1" //socket.getPlayerId();
+        
         this.set('currentPlayer', currentPlayer)
-        this.createPlayer({'x':160,'y':280, 'id': currentPlayer})
+        this.createPlayer({'position':[160,280], 'velocity':[0,0], 'id': currentPlayer})
 
         this.set('size', s);
 
@@ -43,8 +44,8 @@ var Footie = cocos.nodes.Layer.extend({
 
     createPlayer: function(obj){
         var player = Player.create()
-        player.set('position', new geom.Point(obj['x'], obj['y']))
-        player.set('velocity', new geom.Point(0,0) )
+        player.set('position', new geom.Point(obj.position[0], obj.position[1]))
+        player.set('velocity', new geom.Point(obj.velocity[0], obj.velocity[1]))
         this.addChild({child: player})
         this.players[obj['id']] = player
     },
@@ -59,16 +60,23 @@ var Footie = cocos.nodes.Layer.extend({
 
         for( var key in state['players']){
 
-            var obj = players[key]
+            if(this.players[key]===undefined){
+                this.createPlayer(player)                
+            }else{
+    
+                var obj = this.players[key]
 
-            var player = this.players[obj['id']]
-            var playerPos = player.get('position');
+                var player = this.players[obj['id']]
+                var playerPos = player.get('position');
 
-            playerPos.x = obj.position[0];
-            playerPos.y = obj.position[1];
-            player.set('position', playerPos);
+                playerPos.x = obj.position[0];
+                playerPos.y = obj.position[1];
+                player.set('position', playerPos);
 
-            this.setPlayerVelocity(obj['id'], [obj.velocity[0], obj.velocity[1]])
+                this.setPlayerVelocity(obj['id'], [obj.velocity[0], obj.velocity[1]])                
+            }
+
+
         }
 
         var obj = state.ball
