@@ -2,6 +2,15 @@ var cocos = require('cocos2d'),
     geom = require('geometry'),
     util = require('util');
 
+function normalize(vec) {
+    var x = vec.x,
+        y = vec.y;
+
+    var len = Math.sqrt( x*x + y*y);
+    return new geom.Point(x/len, y/len);
+}
+
+
 var Ball = cocos.nodes.Node.extend({
     velocity: null,
 
@@ -54,6 +63,7 @@ var Ball = cocos.nodes.Node.extend({
         this.testEdgeCollision();
     },
 
+
     testPlayers: function() {
         var ballBox = this.get('boundingBox');
         var vel = util.copy(this.get('velocity'));
@@ -65,14 +75,13 @@ var Ball = cocos.nodes.Node.extend({
            playerBox = player.get('boundingBox');
            if (geom.rectOverlapsRect(ballBox, playerBox)) {
                playerVel = player.get('velocity');
-               console.log("collision");
                collisions += 1;
-               var f = (player.isKicking)? 35 : 15;
+               var f = (player.isKicking)? 250 : 150;
                //vel.x += f;
                //vel.y += f;
-
-               vel.x = playerVel.x*2;
-               vel.y = playerVel.y*2;
+               var force = normalize(playerVel);
+               vel.x = force.x * f;
+               vel.y = force.y * f;
            }
         }
         //vel.x /= collisions;
