@@ -1,6 +1,6 @@
 
 {
-    "output":     "public/breakout.js",
+    "output":     "public/footie.js",
     "extensions": ["js", "gif", "jpeg", "jpg", "png", "tmx", "tsx", "plist"],
     "main_module": "main",
 

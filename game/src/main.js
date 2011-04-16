@@ -2,17 +2,17 @@
 var cocos = require('cocos2d'),
 // Import the geometry module
     geom = require('geometry'),
-    Bat = require('Bat'),
+    Player = require('Player'),
     Ball = require('Ball');
 
 // Create a new layer
-var Breakout = cocos.nodes.Layer.extend({
-    bat: null,
+var Footie = cocos.nodes.Layer.extend({
+    player: null,
     ball: null,
 
     init: function() {
         // You must always call the super class version of init
-        Breakout.superclass.init.call(this);
+        Footie.superclass.init.call(this);
 
 
         this.set('isMouseEnabled', true);
@@ -22,11 +22,11 @@ var Breakout = cocos.nodes.Layer.extend({
         var s = cocos.Director.get('sharedDirector').get('winSize');
 
 
-        // Add Bat
-        var bat = Bat.create();
-        bat.set('position', new geom.Point(160, 280));
-        this.addChild({child: bat});
-        this.set('bat', bat);
+        // Add player
+        var player = Player.create();
+        player.set('position', new geom.Point(160, 280));
+        this.addChild({child: player});
+        this.set('player', player);
 
 
         // // Add Ball
@@ -36,12 +36,6 @@ var Breakout = cocos.nodes.Layer.extend({
         // this.set('ball', ball);
 
 
-
-        // // Add Map
-        // var map = cocos.nodes.TMXTiledMap.create({file: '/resources/level1.tmx'});
-        // map.set('position', new geom.Point(0, 0));
-        // this.addChild({child: map});
-        // this.set('map', map);
         var that = this;
         setInterval(function() {
             that.updateState({x:30, y:Math.floor(Math.random() * 50)});
@@ -49,21 +43,25 @@ var Breakout = cocos.nodes.Layer.extend({
 
     },
 
+    createPlayers: function(players){
+        
+    },
+
     updateState: function(state) {
-        var bat = this.get('bat');
-        var batPos = bat.get('position');
-        batPos.x = state.x;
-        batPos.y = state.y;
-        bat.set('position', batPos);
+        var player = this.get('player');
+        var playerPos = player.get('position');
+        playerPos.x = state.x;
+        playerPos.y = state.y;
+        player.set('position', playerPos);
     },
 
-    mouseMoved: function(evt) {
-        var bat = this.get('bat');
-        var batPos = bat.get('position');
-        batPos.x = evt.locationInCanvas.x;
-        bat.set('position', batPos);
+    // mouseMoved: function(evt) {
+    //     var player = this.get('player');
+    //     var playerPos = player.get('position');
+    //     playerPos.x = evt.locationInCanvas.x;
+    //     player.set('position', playerPos);
 
-    },
+    // },
 
     keyDown: function(evt) {
         console.log(evt)
@@ -77,7 +75,7 @@ var Breakout = cocos.nodes.Layer.extend({
         var scene = cocos.nodes.Scene.create();
 
         // Add our layer to the scene
-        scene.addChild({child: Breakout.create()});
+        scene.addChild({child: Footie.create()});
 
         director.replaceScene(scene);
     }
@@ -89,13 +87,13 @@ var Breakout = cocos.nodes.Layer.extend({
 var director = cocos.Director.get('sharedDirector');
 
 // Attach director to our <div> element
-director.attachInView(document.getElementById('breakout-demo'));
+director.attachInView(document.getElementById('footie-demo'));
 
 // Create a scene
 var scene = cocos.nodes.Scene.create();
 
 // Add our layer to the scene
-scene.addChild({child: Breakout.create()});
+scene.addChild({child: Footie.create()});
 
 // Run the scene
 director.runWithScene(scene);

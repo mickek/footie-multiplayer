@@ -1,9 +1,9 @@
 var cocos = require('cocos2d'),
     geom = require('geometry');
 
-var Bat = cocos.nodes.Node.extend({
+var Player = cocos.nodes.Node.extend({
     init: function() {
-        Bat.superclass.init.call(this);
+        Player.superclass.init.call(this);
 
         var sprite = cocos.nodes.Sprite.create({
                          file: '/resources/sprites.png',
@@ -16,4 +16,4 @@ var Bat = cocos.nodes.Node.extend({
     }
 });
 
-module.exports = Bat;
+module.exports = Player;
