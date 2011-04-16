@@ -7,12 +7,13 @@ var cocos = require('cocos2d'),
 
 // Create a new layer
 var Breakout = cocos.nodes.Layer.extend({
-    bat: null, 
+    bat: null,
     ball: null,
 
     init: function() {
         // You must always call the super class version of init
         Breakout.superclass.init.call(this);
+
 
         this.set('isMouseEnabled', true);
         this.set('isKeybordEnabled', true);
@@ -35,11 +36,25 @@ var Breakout = cocos.nodes.Layer.extend({
         // this.set('ball', ball);
 
 
+
         // // Add Map
         // var map = cocos.nodes.TMXTiledMap.create({file: '/resources/level1.tmx'});
         // map.set('position', new geom.Point(0, 0));
         // this.addChild({child: map});
         // this.set('map', map);
+        var that = this;
+        setInterval(function() {
+            that.updateState({x:30, y:Math.floor(Math.random() * 50)});
+        }, 1000);
+
+    },
+
+    updateState: function(state) {
+        var bat = this.get('bat');
+        var batPos = bat.get('position');
+        batPos.x = state.x;
+        batPos.y = state.y;
+        bat.set('position', batPos);
     },
 
     mouseMoved: function(evt) {
@@ -47,6 +62,7 @@ var Breakout = cocos.nodes.Layer.extend({
         var batPos = bat.get('position');
         batPos.x = evt.locationInCanvas.x;
         bat.set('position', batPos);
+
     },
 
     restart: function() {
