@@ -30,6 +30,8 @@ var Footie = cocos.nodes.Layer.extend({
 
         var currentPlayer = socket.getPlayerId();
 
+        console.log(currentPlayer)
+
         this.set('currentPlayer', currentPlayer)
         this.createPlayer({'position':[160,280], 'velocity':[0,0], 'id': currentPlayer})
 
@@ -61,27 +63,35 @@ var Footie = cocos.nodes.Layer.extend({
 
         for (var key in state['players']){
 
+            console.log(this.players[key], this.players)
 
-            if(this.players[key]===undefined){
+            if(this.players[key] === undefined){
                 console.log('create-player', state['players'][key])
+                state['players'][key]['id'] = key
                 this.createPlayer(state['players'][key])
             }else{
 
-                var obj = state['players'][key]
-                var player = this.players[key]                
-                
+                if( this.currentPlayer != key ){
 
-                var playerPos = player.get('position');
+                    var obj = state['players'][key]
+                    var player = this.players[key]                
+                    
+                    
+                    console.log('updatestat', obj, player)                
 
-                playerPos.x = obj.position[0];
-                playerPos.y = obj.position[1];
-                player.set('position', playerPos);
+                    var playerPos = player.get('position');
 
-                var playerVel = player.get('velocity');
+                    playerPos.x = obj.position[0];
+                    playerPos.y = obj.position[1];
+                    player.set('position', playerPos);
 
-                playerPos.x = obj.velocity[0];
-                playerPos.y = obj.velocity[1];
-                player.set('velocity', playerVel);
+                    var playerVel = player.get('velocity');
+
+                    playerVel.x = obj.velocity[0];
+                    playerVel.y = obj.velocity[1];
+                    player.set('velocity', playerVel);
+
+                }
 
             }
 
@@ -213,7 +223,7 @@ var sockSync = setInterval(function () {
 
 socket.onGameUpdate(function (gs) {
     // todo
-    console.log('recieved', gs)
+    // console.log('recieved', gs)
     footie.updateState(gs)
 });
 
