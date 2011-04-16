@@ -72,17 +72,46 @@ var Footie = cocos.nodes.Layer.extend({
         player.set('position', playerPos);
     },
 
-    mouseMoved: function(evt) {
-        var player = this.get(this.get('current_player'));
+    movePlayer: function(player_id, dt){
+        var player = this.get(player_id)
         var playerPos = player.get('position');
-        playerPos.x = evt.locationInCanvas.x;
-        player.set('position', playerPos);
 
+        player.setVelocity(new geom.Point(dt[0], dt[1]));
     },
 
     keyDown: function(evt) {
+
+        var currentPlayer = this.get('current_player')
+
         console.log(evt)
+
+        switch(evt.keyIdentifier){
+            case 'Right':
+                this.movePlayer(currentPlayer, [5, 0])
+                break;
+            case 'Left': 
+                this.movePlayer(currentPlayer, [-5, 0])
+                break;
+            case 'Up': 
+                this.movePlayer(currentPlayer, [0, -5])
+                break;
+            case 'Down': 
+                this.movePlayer(currentPlayer, [0, 5])
+                break;
+
+            default: break;
+
+        }
     },
+
+    keyUp: function(evt) {
+
+        var currentPlayer = this.get('current_player')
+        this.movePlayer(currentPlayer, [0, 0])
+        console.log('player stop')
+
+    },
+
 
 
     restart: function() {
