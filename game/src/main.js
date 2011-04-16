@@ -95,13 +95,14 @@ var Footie = cocos.nodes.Layer.extend({
         }
 
         var obj = state.ball
+        
         if( obj !== undefined ){
             var ballPos = this.ball.get('position');
 
             ballPos.x = obj.position[0];
             ballPos.y = obj.position[1];
 
-            this.ball.set('velocity', new geom.Point(60, 120));
+            this.ball.set('velocity', new geom.Point(obj.velocity[0], obj.velocity[1]));
         }
     },
 
