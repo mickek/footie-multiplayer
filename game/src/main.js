@@ -225,7 +225,7 @@ var sockSync = setInterval(function () {
     // sync state
     var gs = gameState()
     socket.send(gs);
-}, 100);
+}, 50);
 
 socket.onGameUpdate(function (gs) {
     // todo
