@@ -21,7 +21,6 @@ var Footie = cocos.nodes.Layer.extend({
         // You must always call the super class version of init
         Footie.superclass.init.call(this);
 
-
         this.set('isMouseEnabled', true);
         this.set('isKeyboardEnabled', true);
 
@@ -29,26 +28,20 @@ var Footie = cocos.nodes.Layer.extend({
         var s = cocos.Director.get('sharedDirector').get('winSize');
 
         this.set('currentPlayer', 'player0')
-        this.createPlayers([
-            {'x':160,'y':280, 'id':'player0'},
-            {'x':140,'y':180, 'id':'player1'},
-        ])
+        this.createPlayer( {'x':160,'y':280, 'id':'player0'} )
 
-        // add syncing event for player
-        var currentPlayer = this.get('current_player');
-        evt.addListener(this.player0, 'position_changed', function (pos) {
-            socket.send(JSON.stringify(gameState));
-        });
+        // // Add Ball
+        // var ball = Ball.create();
+        // ball.set('position', new geom.Point(140, 210));
+        // this.addChild({child: ball});
+        // this.set('ball', ball);
 
-    },
-
-    createPlayer: function(player){
-
+    createPlayer: function(obj){
         var player = Player.create()
-        player.set( 'position', new geom.Point(player['x'], player['y']) )
+        player.set( 'position', new geom.Point(obj['x'], obj['y']) )
         player.set('velocity', new geom.Point(0,0) )
         this.addChild({child: player})
-        this.players[player['id']] = player
+        this.players[obj['id']] = player
     },
 
     /**
